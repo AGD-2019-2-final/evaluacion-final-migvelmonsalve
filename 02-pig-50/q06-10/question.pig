@@ -12,3 +12,13 @@ fs -rm -f -r output;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+
+data = LOAD 'data.tsv' AS (perro:CHARARRAY,gato:BAG{pato:tuple(letra:CHARARRAY)},pollo:MAP[CHARARRAY]);
+
+top = FOREACH data GENERATE FLATTEN(pollo);
+
+numero = GROUP top BY pollo::key;
+
+grouped = FOREACH numero GENERATE group,COUNT(top.pollo::key);
+
+STORE grouped INTO 'output/' USING PigStorage(',');

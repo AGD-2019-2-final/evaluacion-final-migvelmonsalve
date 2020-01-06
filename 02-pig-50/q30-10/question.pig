@@ -41,3 +41,8 @@ u = LOAD 'data.csv' USING PigStorage(',')
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
 
+data = LOAD 'data.csv' USING PigStorage(',') AS (id_persona:INT,nombre:CHARARRAY,apellido:CHARARRAY,fecha:CHARARRAY,color:CHARARRAY,numero:INT);
+
+top = FOREACH data GENERATE fecha,ToString(ToDate(fecha,'yyyy-MM-dd'),'dd') AS dia,GetDay(ToDate(fecha,'yyyy-MM-dd')) AS dia2,LOWER(ToString(ToDate(fecha,'yyyy-MM-dd'),'EE')) AS dia3,LOWER(ToString(ToDate(fecha,'yyyy-MM-dd'),'EEEE')) AS dia4;
+
+STORE top INTO 'output/' USING PigStorage(',');

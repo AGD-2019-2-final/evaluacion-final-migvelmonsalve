@@ -8,3 +8,13 @@ fs -rm -f -r output;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+
+data = LOAD 'data.tsv' AS (letra:CHARARRAY,fecha:CHARARRAY,numero:INT);
+
+grouped = ORDER data BY numero ASC;
+
+numero = FOREACH grouped GENERATE numero;
+
+top = LIMIT numero 5;
+
+STORE top INTO 'output/';

@@ -33,3 +33,11 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+
+data = LOAD 'data.csv' USING PigStorage(',') AS (id_persona:INT,nombre:CHARARRAY,apellido:CHARARRAY,fecha:CHARARRAY,color:CHARARRAY,numero:INT);
+
+top = FILTER data BY SUBSTRING(apellido,0,1) IN ('D','E','F','G','H','I','J','K');
+
+numero = FOREACH top GENERATE apellido;
+
+STORE numero INTO 'output/' USING PigStorage(',');

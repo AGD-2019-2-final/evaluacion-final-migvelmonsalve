@@ -40,4 +40,22 @@ LOAD DATA LOCAL INPATH 'tbl1.csv' INTO TABLE tbl1;
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
 
+DROP TABLE IF EXISTS t0;
+CREATE TABLE t0 AS
+WITH t0 AS(
+SELECT 
+ c1,collect_list(UPPER(letra)) AS lista
+FROM tbl0 LATERAL VIEW explode(c5) adTable AS letra
+GROUP BY c1
+)
+SELECT 
+   lista
+FROM t0;
+
+INSERT OVERWRITE LOCAL DIRECTORY 'output'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+COLLECTION ITEMS TERMINATED BY ':'
+SELECT 
+   lista
+FROM t0;
 

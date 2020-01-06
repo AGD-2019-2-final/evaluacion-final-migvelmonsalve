@@ -14,3 +14,13 @@ fs -rm -f -r output;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+
+data = LOAD 'data.tsv' AS (perro:CHARARRAY,gato:BAG{pato:tuple(letra:CHARARRAY)},pollo:MAP[CHARARRAY]);
+
+top = FOREACH data GENERATE FLATTEN(gato) AS gatito ,FLATTEN(pollo);
+
+numero = GROUP top BY (gatito,pollo::key);
+
+grouped = FOREACH numero GENERATE group,COUNT(top);
+
+STORE grouped INTO 'output/';

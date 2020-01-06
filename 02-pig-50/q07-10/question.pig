@@ -12,3 +12,11 @@ fs -rm -f -r output;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+
+data = LOAD 'data.tsv' AS (perro:CHARARRAY,gato:BAG{pato:tuple(letra:CHARARRAY)},pollo:MAP[CHARARRAY]);
+
+top = FOREACH data GENERATE perro,COUNT(gato.letra) AS conteo1 ,SIZE(pollo) AS conteo2;
+
+numero = ORDER top BY perro,conteo1,conteo2;
+
+STORE numero INTO 'output/' USING PigStorage(',');

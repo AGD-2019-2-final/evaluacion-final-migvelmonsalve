@@ -27,3 +27,12 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+
+
+data = LOAD 'data.csv' USING PigStorage(',') AS (id_persona:INT,nombre:CHARARRAY,apellido:CHARARRAY,fecha:CHARARRAY,color:CHARARRAY,numero:INT);
+
+top = FILTER data BY NOT color IN ('blue','black');
+
+numero = FOREACH top GENERATE nombre,color;
+
+STORE numero INTO 'output/' USING PigStorage(',');

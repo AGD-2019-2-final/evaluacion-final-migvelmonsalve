@@ -40,3 +40,10 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+
+
+data = LOAD 'data.csv' USING PigStorage(',') AS (id_persona:INT,nombre:CHARARRAY,apellido:CHARARRAY,fecha:CHARARRAY,color:CHARARRAY,numero:INT);
+
+top = FOREACH data GENERATE fecha,LOWER(ToString(ToDate(fecha,'yyyy-MM-dd'),'MMM')) AS mes_nombre,ToString(ToDate(fecha,'yyyy-MM-dd'),'MM') AS mes2,GetMonth(ToDate(fecha,'yyyy-MM-dd')) AS mes;
+
+STORE top INTO 'output/' USING PigStorage(',');

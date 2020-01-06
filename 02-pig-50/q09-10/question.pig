@@ -27,5 +27,9 @@
 -- 
 fs -rm -f -r output;
 --
+data = LOAD 'data.csv' USING PigStorage(',') AS (id_persona:INT,nombre:CHARARRAY,apellido:CHARARRAY,fecha:CHARARRAY,color:CHARARRAY,numero:INT);
 
+top = FOREACH data GENERATE CONCAT(nombre,'@',apellido) AS gatito;
+
+STORE top INTO 'output/';
 
